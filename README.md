@@ -28,8 +28,6 @@ When you call `upsert_translation`, you point to a **specific** language file (e
 
 ### npx (no install needed)
 
-If the package is published to npm you can run it directly:
-
 ```bash
 npx resx-translations-mcp
 ```
