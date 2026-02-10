@@ -26,7 +26,7 @@ export function createServer(): Server {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   const server = new Server(
     { name: SERVER_NAME, version: SERVER_VERSION },
-    { capabilities: { tools: {} } },
+    { capabilities: { tools: {}, logging: {} } },
   );
 
   // ── List available tools ────────────────────────────────────────────

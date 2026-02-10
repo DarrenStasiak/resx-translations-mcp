@@ -13,10 +13,11 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 
 import { SERVER_NAME, SERVER_VERSION } from "./constants.js";
 import { createServer } from "./server.js";
-import { logger } from "./utils/index.js";
+import { logger, attachServerToLogger } from "./utils/index.js";
 
 async function main(): Promise<void> {
   const server = createServer();
+  attachServerToLogger(server);
   const transport = new StdioServerTransport();
 
   // Graceful shutdown on SIGINT / SIGTERM.

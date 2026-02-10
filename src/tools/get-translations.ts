@@ -9,6 +9,7 @@ import {
   findRelatedResxFiles,
   getBaseName,
   extractLanguageLabel,
+  logger,
 } from "../utils/index.js";
 
 /**
@@ -21,6 +22,8 @@ export async function handleGetTranslations(
   const basePath = requireResxPath(args?.basePath, "basePath");
   const key = requireString(args?.key, "key");
   const baseName = getBaseName(basePath);
+
+  logger.info(`Looking up key '${key}' across variants of ${path.basename(basePath)}`);
 
   const files = await findRelatedResxFiles(basePath);
 
@@ -67,6 +70,7 @@ export async function handleGetTranslations(
   }
 
   const result: TranslationResult = { key, translations };
+  logger.info(`Found translations for '${key}' in ${Object.keys(translations).length} file(s)`);
 
   return {
     content: [{ type: "text", text: JSON.stringify(result, null, 2) }],

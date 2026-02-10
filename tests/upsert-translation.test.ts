@@ -32,6 +32,11 @@ describe("handleUpsertTranslation", () => {
     } catch {
       // ignore
     }
+    try {
+      await fs.unlink(TEMP_FILE + ".lock");
+    } catch {
+      // ignore
+    }
   });
 
   it("updates an existing key", async () => {
@@ -135,5 +140,57 @@ describe("handleUpsertTranslation", () => {
 
     const written = await fs.readFile(TEMP_FILE, "utf-8");
     expect(written).toContain("\r\n");
+  });
+
+  it("handles concurrent upserts to the same file without data loss", async () => {
+    // Launch 10 parallel upserts, each adding a different key.
+    const promises = Array.from({ length: 10 }, (_, i) =>
+      handleUpsertTranslation({
+        filePath: TEMP_FILE,
+        key: `CONCURRENT_${i}`,
+        value: `Value ${i}`,
+      }),
+    );
+
+    const results = await Promise.all(promises);
+
+    // Every call should succeed.
+    for (const r of results) {
+      expect(r.isError).toBeUndefined();
+    }
+
+    // The final file must contain all 10 new keys plus the original one.
+    const parsed = await parseResxFile(TEMP_FILE);
+    expect(parsed).not.toBeNull();
+    expect(parsed!.document.root.data).toHaveLength(11); // 1 existing + 10 new
+
+    for (let i = 0; i < 10; i++) {
+      const entry = parsed!.document.root.data!.find(
+        (d) => d.$.name === `CONCURRENT_${i}`,
+      );
+      expect(entry, `CONCURRENT_${i} should exist in the file`).toBeDefined();
+      expect(entry!.value![0]).toBe(`Value ${i}`);
+    }
+  });
+
+  it("handles concurrent updates to the same key", async () => {
+    // Launch 5 parallel updates to the same key — the last writer wins,
+    // but the file must remain valid and no crash should occur.
+    const promises = Array.from({ length: 5 }, (_, i) =>
+      handleUpsertTranslation({
+        filePath: TEMP_FILE,
+        key: "EXISTING_KEY",
+        value: `Concurrent ${i}`,
+      }),
+    );
+
+    await Promise.all(promises);
+
+    const parsed = await parseResxFile(TEMP_FILE);
+    expect(parsed).not.toBeNull();
+    // Still exactly one entry — the key was updated, not duplicated.
+    expect(parsed!.document.root.data).toHaveLength(1);
+    // The value should be one of the "Concurrent N" strings.
+    expect(parsed!.document.root.data![0]!.value![0]).toMatch(/^Concurrent \d$/);
   });
 });
