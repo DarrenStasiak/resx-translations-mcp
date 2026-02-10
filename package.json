@@ -1,0 +1,56 @@
+{
+  "name": "resx-translations-mcp",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol (MCP) server for reading and editing .NET .resx translation files",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "resx-translations-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "resx",
+    "translations",
+    "i18n",
+    "dotnet",
+    "model-context-protocol"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "glob": "^13.0.2",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^25.2.3",
+    "@types/xml2js": "^0.4.14",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.28.0",
+    "vitest": "^4.0.18"
+  }
+}

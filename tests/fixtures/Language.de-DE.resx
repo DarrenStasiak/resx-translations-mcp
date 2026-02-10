@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="BUTTON_SAVE" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+</root>

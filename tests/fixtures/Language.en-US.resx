@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="BUTTON_SAVE" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="TITLE_HOME" xml:space="preserve">
+    <value>Home</value>
+  </data>
+</root>

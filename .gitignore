@@ -1,0 +1,21 @@
+# Build output
+dist/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Generated files
+*.js.map
+*.d.ts
+
+# Environment & OS files
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.idea/
+*.swp
+*.swo
