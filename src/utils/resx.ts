@@ -75,8 +75,16 @@ export async function writeResxFile(
   eol: string = RESX_DEFAULT_EOL,
 ): Promise<void> {
   sortDataEntries(data);
-  const builder = createXmlBuilder(eol);
-  const xml = builder.buildObject(data);
+
+  // Always build with LF internally to prevent xml2js from encoding \r
+  // as &#xD; inside text nodes. Convert to the desired EOL afterwards.
+  const builder = createXmlBuilder("\n");
+  let xml = builder.buildObject(data);
+
+  if (eol === "\r\n") {
+    xml = xml.replace(/\n/g, "\r\n");
+  }
+
   await fs.writeFile(filePath, xml, "utf-8");
 }
 
