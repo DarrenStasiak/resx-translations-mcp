@@ -1,6 +1,6 @@
 {
   "name": "resx-translations-mcp",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Model Context Protocol (MCP) server for reading and editing .NET .resx translation files",
   "main": "dist/index.js",
   "type": "module",
