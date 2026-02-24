@@ -23,7 +23,9 @@ export async function handleUpsertTranslation(
 ): Promise<{ content: { type: string; text: string }[]; isError?: boolean }> {
   const filePath = requireResxPath(args?.filePath, "filePath");
   const key = requireString(args?.key, "key");
-  const value = requireString(args?.value, "value");
+  let value = requireString(args?.value, "value");
+  // Normalize line endings: replace \r\n with \n, then remove stray \r
+  value = value.replace(/\r\n/g, "\n").replace(/\r/g, "");
 
   logger.info(`Upserting key '${key}' in ${path.basename(filePath)}`);
 
